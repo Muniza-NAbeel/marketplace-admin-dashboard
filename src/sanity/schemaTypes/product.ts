@@ -1,7 +1,7 @@
 const product = {
-  name: 'car',
+  name: 'product',
   type: 'document',
-  title: 'Car',
+  title: 'Product',
   fields: [
     {
       name: 'name',

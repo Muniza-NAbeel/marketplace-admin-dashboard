@@ -3,8 +3,9 @@ import {blockContentType} from './blockContentType'
 import {categoryType} from './categoryType'
 import {postType} from './postType'
 import {authorType} from './authorType'
-import product from './product'
+import orderSchema from './order'
+import carSchema from './cars'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [blockContentType, categoryType,  postType, authorType, product],
+  types: [blockContentType, categoryType, orderSchema, carSchema,  postType, authorType],
 }

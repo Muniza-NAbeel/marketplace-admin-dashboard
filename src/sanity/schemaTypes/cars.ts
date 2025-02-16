@@ -67,7 +67,8 @@ const carSchema = {
         options: {
           hotspot: true,
         },
-      },
+      }
+      
     ],
   };
   

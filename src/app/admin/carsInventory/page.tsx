@@ -2,6 +2,7 @@
 
 import { FaSpinner, FaSearch, FaCar } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { client } from "@/sanity/lib/client";
 
 const ThemedIcon = ({ icon: Icon, className }: { icon: React.ElementType; className?: string }) => (
   <Icon className={className || ''} />
@@ -10,10 +11,14 @@ const ThemedIcon = ({ icon: Icon, className }: { icon: React.ElementType; classN
 interface Car {
   _id: string;
   name: string;
-  model: string;
-  price: string;
-  stock: number;
-  category: string;
+  type: string;
+  image: string[];
+  isFavorite: boolean;
+  fuelCapacity: string;
+  transmission: string;
+  seatingCapacity: string;
+  pricePerDay: number;
+  originalPrice: number;
 }
 
 export default function Cars() {
@@ -24,13 +29,21 @@ export default function Cars() {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        // Replace this with your API or data fetching logic
-        const data: Car[] = [
-          { _id: "1", name: "Honda Civic", model: "2022", price: "$25,000", stock: 5, category: "sedan" },
-          { _id: "2", name: "Ford Mustang", model: "2021", price: "$55,000", stock: 2, category: "sports" },
-          { _id: "3", name: "Toyota Corolla", model: "2023", price: "$22,000", stock: 8, category: "sedan" },
-          { _id: "4", name: "Tesla Model S", model: "2022", price: "$90,000", stock: 3, category: "electric" },
-        ];
+       const data = await client.fetch(`*[_type == "car"] {
+        _id,
+        name,
+        type,
+        fuelCapacity,
+        transmission,
+        seatingCapacity,
+        pricePerDay,
+        originalPrice,
+        image {
+          asset->{
+            url
+          }
+        }
+      }`)
         setCars(data);
       } catch (error) {
         console.error("Error fetching cars:", error);
@@ -45,7 +58,7 @@ export default function Cars() {
   const filteredCars = cars.filter(
     (car) =>
       car.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      car.model.toLowerCase().includes(searchTerm.toLowerCase())
+      car.type.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -93,10 +106,12 @@ export default function Cars() {
                 <thead className="bg-blue-600 text-white">
                   <tr>
                     <th className="px-6 py-3 text-left">Car Name</th>
-                    <th className="px-6 py-3 text-left">Model</th>
+                    <th className="px-6 py-3 text-left">Type</th>
                     <th className="px-6 py-3 text-left">Price</th>
-                    <th className="px-6 py-3 text-left">Stock</th>
-                    <th className="px-6 py-3 text-left">Category</th>
+                    <th className="px-6 py-3 text-left">Transmission</th>
+                    <th className="px-6 py-3 text-left">Fuel Capacity</th>
+                    <th className="px-6 py-3 text-left">Seating Capacity</th>
+
                   </tr>
                 </thead>
                 <tbody className=" divide-gray-800">
@@ -117,10 +132,12 @@ export default function Cars() {
                     filteredCars.map((car) => (
                       <tr key={car._id}>
                         <td className="px-6 py-4">{car.name}</td>
-                        <td className="px-6 py-4">{car.model}</td>
-                        <td className="px-6 py-4">{car.price}</td>
-                        <td className="px-6 py-4">{car.stock}</td>
-                        <td className="px-6 py-4">{car.category}</td>
+                        <td className="px-6 py-4">{car.type}</td>
+                        <td className="px-6 py-4">{car.pricePerDay}</td>
+                        <td className="px-6 py-4">{car.transmission}</td>
+                        <td className="px-6 py-4">{car.fuelCapacity}</td>
+                        <td className="px-6 py-4">{car.seatingCapacity}</td>
+
                       </tr>
                     ))
                   )}

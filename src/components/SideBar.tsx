@@ -89,7 +89,7 @@ const SideBar = () => {
           </Link>
 
           <Link 
-            href="/admin/customers" 
+            href="/admin/carsInventory" 
             className="flex items-center gap-4 hover:bg-white/10 p-3 rounded-xl transition-all duration-300 group"
           >
             <div className="p-2 bg-blue-500/10 rounded-lg group-hover:bg-blue-500/20 transition-colors">
